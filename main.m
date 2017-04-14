@@ -7,18 +7,13 @@ gamma = 2*pi*gammabar;
 %%      2 The Signal
 B0 = 2;
 tp = 10e-6;
-iv = ImagingVolume(0, 0, 0.5, 0.02);
-
+iv = ImagingVolume(0, 0, 0.5, 0.02);  %T1=0.5s and T2= 0.02s
+f = gammabar*B0;
+B1 = [5.9e-3, 5.9e-3, 2.9e-3];  %Calculated
 %Rectangular RF pulses
-rf1 = RectPulse(5.9e-3, 42.58e6, pi/2, tp);
-rf2 = RectPulse(5.9e-3, 42.58e6, -pi/2, tp);
-rf3 = RectPulse(2.9e-3, 42.58e6, pi/4, tp);
-% 
-% figure;
-% subplot(1,3,1); plot(rf1);   
-% subplot(1,3,2); plot(rf2);   
-% subplot(1,3,3); plot(rf3); 
- 
+rf1 = RectPulse(B1(1), f, pi/2, tp);
+rf2 = RectPulse(B1(2), f, -pi/2, tp);
+rf3 = RectPulse(B1(3), f, pi/4, tp);
 
 % Creation of the ADC for the object, obtaining digital form
 [S1,ts] = seemri(iv,B0,rf1,[],[],ADC(0.2,0.2/100));
@@ -27,7 +22,7 @@ iv.toEquilibrium();
 iv.toEquilibrium();
 [S3,ts] = seemri(iv,B0,rf3,[],[],ADC(0.2,0.2/100));
 iv.toEquilibrium();
-
+%%
 figure;
 subplot(2,1,1);
 plot(ts, abs(S1), ts, abs(S2), '--', ts, abs(S3), '-.');
@@ -70,6 +65,8 @@ B0 = 2;
 G = 1.2e-6;
 tau = 5e-3;
 iv = ImagingVolume(-4:1:4, -4:1:4, 0.5, 0.02, 1, 'dB0Gamma', 0.1e-6);
+
+Gx = Gradient([tp tp+tau tp+3*tau], [-G 2*G 0]);
 
 
 
