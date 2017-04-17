@@ -9,29 +9,28 @@ B0 = 2;
 tp = 10e-6;
 iv = ImagingVolume(0, 0, 0.5, 0.02);  %T1=0.5s and T2= 0.02s
 f = gammabar*B0;
-B1 = [5.9e-3, 5.9e-3, 2.9e-3];  %Calculated
+B1 = [5.9e-4, 5.9e-4, 2.9e-4];  %Calculated
 %Rectangular RF pulses
 rf1 = RectPulse(B1(1), f, 0, tp);
-rf2 = RectPulse(B1(2), f, -pi/2, tp);
+rf2 = RectPulse(B1(2), f, pi/2, tp);
 rf3 = RectPulse(B1(3), f, 0, tp);
 
 % Creation of the ADC for the object, obtaining digital form
-[S1,ts] = seemri(iv,B0,rf1,[],[],ADC(0.2,0.2/100));
+[S1, ts] = seemri(iv, B0, rf1, [], [], ADC(0.2, 0.2/100));
 iv.toEquilibrium();
-[S2,ts] = seemri(iv,B0,rf2,[],[],ADC(0.2,0.2/100));
+[S2, ts] = seemri(iv, B0, rf2, [], [], ADC(0.2, 0.2/100));
 iv.toEquilibrium();
-[S3,ts] = seemri(iv,B0,rf3,[],[],ADC(0.2,0.2/100));
+[S3, ts] = seemri(iv, B0, rf3, [], [], ADC(0.2, 0.2/100));
 iv.toEquilibrium();
-%%
-figure;
-subplot(2,1,1);
-plot(ts, abs(S1), ts, abs(S2), '--', ts, abs(S3), '-.');
-xlabel ('Time');
-ylabel('Signal magnitude');
-subplot(2,1,2);
-plot(ts, angle(S1), ts, angle(S2), '--',ts,angle(S3),'-.');
+figure
+subplot(2,1,1)
+plot(ts, abs(S1), ts, abs(S2), '--', ts, abs(S3), '-.')
 xlabel('Time (s)')
-ylabel('Signal phase(radians)');
+ylabel('Signal magnitude')
+subplot(2,1,2)
+plot(ts, angle(S1), ts, angle(S2), '--', ts, angle(S3), '-.')
+xlabel('Time (s)')
+ylabel('Signal phase (radians)');
 
 %% Preguntas
 % Porque el Beff no esta rotando?, la magnitud y fase no deberian de afectar
