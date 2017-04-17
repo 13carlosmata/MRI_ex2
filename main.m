@@ -11,9 +11,9 @@ iv = ImagingVolume(0, 0, 0.5, 0.02);  %T1=0.5s and T2= 0.02s
 f = gammabar*B0;
 B1 = [5.9e-3, 5.9e-3, 2.9e-3];  %Calculated
 %Rectangular RF pulses
-rf1 = RectPulse(B1(1), f, pi/2, tp);
+rf1 = RectPulse(B1(1), f, 0, tp);
 rf2 = RectPulse(B1(2), f, -pi/2, tp);
-rf3 = RectPulse(B1(3), f, pi/4, tp);
+rf3 = RectPulse(B1(3), f, 0, tp);
 
 % Creation of the ADC for the object, obtaining digital form
 [S1,ts] = seemri(iv,B0,rf1,[],[],ADC(0.2,0.2/100));
@@ -67,7 +67,7 @@ tau = 5e-3;
 iv = ImagingVolume(-4:1:4, -4:1:4, 0.5, 0.02, 1, 'dB0Gamma', 0.1e-6);
 
 Gx = Gradient([tp tp+tau tp+3*tau], [-G 2*G 0]);
-
+[S, ts] = seemri(iv, B0, rf1, Gx, [], ADC(0.02, 0.02/100));
 
 
 
